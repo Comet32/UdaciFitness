@@ -6,6 +6,7 @@ import UdaciSteppers from './UdaciSteppers'
 import DateHeader from './DateHeader'
 import { Ionicons } from '@expo/vector-icons'
 import TextButton from './TextButton'
+import {submitItem, removeItem} from '../utils/api'
 
 function SubmitBtm({ onPress }) {
   return (
@@ -72,6 +73,7 @@ export default class AddEntry extends Component {
     // Navigate to home
 
     // Save to 'DB'
+    submitItem(key, entry)
 
     // Clear local notification
   }
@@ -81,9 +83,10 @@ export default class AddEntry extends Component {
     
     // Update Redux
 
-    // Route to Home
+    // Route to Homen
 
-    // Update 
+    // Update "DB"
+    removeItem(key)
   }
 
   render() {
@@ -128,6 +131,7 @@ export default class AddEntry extends Component {
           )
         })}
         <SubmitBtm onPress={this.submit} />
+        <Text>123</Text>
       </View>
     )
   }
