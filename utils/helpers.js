@@ -51,6 +51,8 @@ export function timeToString(time = Date.now()) {
   return todayUTC.toISOString().split('T')[0]
 }
 
+// 为什么需要创建一个函数来返回一个对象，而不是直接创建一个对象来调用。
+// 因为如果我们直接调用对象来使用，当改变对象的值时，这个对象就会被改变，而通过一个函数来调用返回的则是一个完全不同的对象，因为闭包。
 export function getMetricMetaInfo(metric) {
   const info = {
     run: {
@@ -59,6 +61,7 @@ export function getMetricMetaInfo(metric) {
       unit: 'miles',
       step: 1,
       type: 'steppers',
+      // 通过函数的方法存放 jsx
       getIcon() {
         return (
           <View>
