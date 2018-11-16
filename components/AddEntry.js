@@ -1,12 +1,18 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import { getMetricMetaInfo, timeToString } from '../utils/helpers'
+import {
+  getMetricMetaInfo,
+  timeToString,
+  getDailyReminderValue
+} from '../utils/helpers'
 import UdaciSlider from './UdaciSlider'
 import UdaciSteppers from './UdaciSteppers'
 import DateHeader from './DateHeader'
 import { Ionicons } from '@expo/vector-icons'
 import TextButton from './TextButton'
-import {submitItem, removeItem} from '../utils/api'
+import { submitItem, removeItem } from '../utils/api'
+import { connect } from 'react-redux'
+import { addEntry } from '../actions'
 
 function SubmitBtm({ onPress }) {
   return (
@@ -16,7 +22,7 @@ function SubmitBtm({ onPress }) {
   )
 }
 
-export default class AddEntry extends Component {
+class AddEntry extends Component {
   state = {
     run: 0,
     bike: 0,
@@ -61,6 +67,12 @@ export default class AddEntry extends Component {
     const entry = this.state
 
     // Update Redux
+    this.props.dispatch(
+      addEntry({
+        [key]: entry
+      })
+    )
+
 
     this.setState(() => ({
       run: 0,
@@ -80,8 +92,13 @@ export default class AddEntry extends Component {
 
   reset = () => {
     const key = timeToString()
-    
+
     // Update Redux
+    this.props.dispatch(
+      addEntry({
+        [key]: getDailyReminderValue()
+      })
+    )
 
     // Route to Homen
 
@@ -91,7 +108,7 @@ export default class AddEntry extends Component {
 
   render() {
     const metaInfo = getMetricMetaInfo()
-
+    console.log(this.props.alreadyLogged)
     // 这里非常好，因为 render() 其实就是一个函数，只要遇到 return 它就返回并不会再执行后面的代码
     if (this.props.alreadyLogged) {
       return (
@@ -136,3 +153,13 @@ export default class AddEntry extends Component {
     )
   }
 }
+
+function mapStateToProps(state) {
+  const key = timeToString()
+  return {
+    // undefined 不是 'undefined'
+    alreadyLogged: state[key] && state[key].today === undefined
+  }
+}
+
+export default connect(mapStateToProps)(AddEntry)
