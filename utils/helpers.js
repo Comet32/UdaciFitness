@@ -1,11 +1,11 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import {
   FontAwesome,
   MaterialIcons,
   MaterialCommunityIcons
 } from '@expo/vector-icons'
-import { white } from './colors'
+import { white, red, orange, blue, lightPurp, pink} from './colors'
 
 export function isBetween(num, x, y) {
   if (num >= x && num <= y) {
@@ -51,8 +51,20 @@ export function timeToString(time = Date.now()) {
   return todayUTC.toISOString().split('T')[0]
 }
 
+const styles = StyleSheet.create({
+  iconContainer:{
+    padding: 5,
+    borderRadius: 8,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 20
+  }
+})
+
 // 为什么需要创建一个函数来返回一个对象，而不是直接创建一个对象来调用。
-// 因为如果我们直接调用对象来使用，当改变对象的值时，这个对象就会被改变，而通过一个函数来调用返回的则是一个完全不同的对象，因为闭包。
+// 因为如果我们直接调用对象来使用，当改变对象的值时，这个对象就会被改变，由于闭包的原因，通过一个函数来调用返回的则是一个完全不同的对象，。
 export function getMetricMetaInfo(metric) {
   const info = {
     run: {
@@ -64,7 +76,7 @@ export function getMetricMetaInfo(metric) {
       // 通过函数的方法存放 jsx
       getIcon() {
         return (
-          <View>
+          <View style={[styles.iconContainer,{backgroundColor: red}]}>
             <MaterialIcons name="directions-run" color={white} size={35} />
           </View>
         )
@@ -78,21 +90,20 @@ export function getMetricMetaInfo(metric) {
       type: 'steppers',
       getIcon() {
         return (
-          <View>
-            <MaterialCommunityIcons name="bike" color={'black'} size={32} />
+          <View style={[styles.iconContainer,{backgroundColor: orange}]}>
+            <MaterialCommunityIcons name="bike" color={white} size={32} />
           </View>
         )
       }
     },
     swim: {
       displayName: 'Swim',
-      max: 9900,
       unit: 'meters',
       step: 100,
       type: 'steppers',
       getIcon() {
         return (
-          <View>
+          <View style={[styles.iconContainer,{backgroundColor: blue}]}>
             <MaterialCommunityIcons name="swim" color={white} size={35} />
           </View>
         )
@@ -106,7 +117,7 @@ export function getMetricMetaInfo(metric) {
       type: 'slider',
       getIcon() {
         return (
-          <View>
+          <View style={[styles.iconContainer,{backgroundColor: lightPurp}]}>
             <FontAwesome name="bed" color={white} size={30} />
           </View>
         )
@@ -120,7 +131,7 @@ export function getMetricMetaInfo(metric) {
       type: 'slider',
       getIcon() {
         return (
-          <View>
+          <View style={[styles.iconContainer,{backgroundColor: pink}]}>
             <MaterialCommunityIcons name="food" color={white} size={35} />
           </View>
         )
