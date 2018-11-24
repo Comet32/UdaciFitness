@@ -9,7 +9,9 @@ import {
 import {
   getMetricMetaInfo,
   timeToString,
-  getDailyReminderValue
+  getDailyReminderValue,
+  setLocalNotification,
+  clearLocalNotification
 } from '../utils/helpers'
 import UdaciSlider from './UdaciSlider'
 import UdaciSteppers from './UdaciSteppers'
@@ -20,6 +22,7 @@ import { submitItem, removeItem } from '../utils/api'
 import { connect } from 'react-redux'
 import { addEntry } from '../actions'
 import { white, purple } from '../utils/colors'
+import { NavigationActions } from 'react-navigation'
 
 function SubmitBtm({ onPress }) {
   return (
@@ -94,11 +97,13 @@ class AddEntry extends Component {
     }))
 
     // Navigate to home
+    this.toHome()
 
     // Save to 'DB'
     submitItem(key, entry)
 
     // Clear local notification
+    clearLocalNotification().then(setLocalNotification)
   }
 
   reset = () => {
@@ -112,21 +117,30 @@ class AddEntry extends Component {
     )
 
     // Route to Homen
+    this.toHome()
 
     // Update "DB"
     removeItem(key)
   }
 
+  toHome = () => {
+    this.props.navigation.dispatch(NavigationActions.back({ key: 'AddEntry' }))
+  }
+
   render() {
     const metaInfo = getMetricMetaInfo()
-    console.log(this.props.alreadyLogged)
     // 这里非常好，因为 render() 其实就是一个函数，只要遇到 return 它就返回并不会再执行后面的代码
     if (this.props.alreadyLogged) {
       return (
         <View style={styles.center}>
-          <Ionicons name={Platform.OS === 'ios' ? 'ios-happy-outline' : 'md-happy'} size={100} />
+          <Ionicons
+            name={Platform.OS === 'ios' ? 'ios-happy-outline' : 'md-happy'}
+            size={100}
+          />
           <Text>You already logged your information for today.</Text>
-          <TextButton onPress={this.reset} style={{padding: 10}}>Reset</TextButton>
+          <TextButton onPress={this.reset} style={{ padding: 10 }}>
+            Reset
+          </TextButton>
         </View>
       )
     }
@@ -170,7 +184,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: white
   },
-  row :{
+  row: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center'

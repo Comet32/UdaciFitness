@@ -5,7 +5,6 @@ import { getMetricMetaInfo } from '../utils/helpers'
 import { gray } from '../utils/colors'
 
 export default function({ metrics, date }) {
-  debugger
   return (
     <View>
       {date && <DateHeader date={date} />}
