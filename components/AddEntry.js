@@ -153,7 +153,7 @@ class AddEntry extends Component {
           const value = this.state[key]
 
           return (
-            <View key={key} style={styles.row}>
+            <View key={p} style={styles.row}>
               {getIcon()}
               {type === 'slider' ? (
                 <UdaciSlider
@@ -226,8 +226,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   const key = timeToString()
   return {
-    // undefined 不是 'undefined'
-    alreadyLogged: state[key] && state[key].today === undefined
+    alreadyLogged: state[key] && typeof state[key].today === 'undefined'
   }
 }
 
